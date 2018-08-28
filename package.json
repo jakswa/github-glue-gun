@@ -1,0 +1,15 @@
+{
+  "name": "github-glue-gun",
+  "version": "0.1.0",
+  "description": "github glue gun",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jake Swanson <jakswa@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "hapi": "^17.5.4",
+    "node-fetch": "^2.2.0"
+  }
+}
