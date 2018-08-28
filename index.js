@@ -25,8 +25,6 @@ server.route({
   method: 'POST',
   path: '/github_glue',
   handler: function(request, h) {
-    console.log("POST /github_glue - " + JSON.stringify(request.payload));
-
     let action = request.payload.action;
     let pr = request.payload.pull_request || {};
     let entID = pr.body && TP.parseEntityID(pr.body);
