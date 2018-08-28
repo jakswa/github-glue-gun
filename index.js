@@ -27,11 +27,12 @@ server.route({
   handler: function(request, h) {
     console.log("POST /github_glue - " + JSON.stringify(request.payload));
 
+    let action = request.payload.action;
     let pr = request.payload.pull_request || {};
     let entID = pr.body && TP.parseEntityID(pr.body);
-    if (entID) {
-      TP.link(entID, pr.url)
-        .then(() => console.log(`spotted ${entID}, glued to ${pr.url}`));
+    if (action === 'opened' && entID) {
+      TP.link(entID, pr.html_url)
+        .then(() => console.log(`spotted ${entID}, glued to ${pr.html_url}`));
     }
 
     return h.response('OK').code(201);
