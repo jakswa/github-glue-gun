@@ -1,38 +1,27 @@
 const Hapi = require('hapi');
-const TP = require('./tp');
-
 const PORT = process.env.PORT || 5000;
+const fs = require('fs');
+const path = require('path');
+
+// Loading plugins
+var plugins = [];
+fs.readdirSync(path.join(__dirname, "plugins")).forEach(function(file) {
+  plugins.push(require("./plugins/" + file));
+});
 
 const server = Hapi.server({ port: PORT });
 
 server.route({
   method: 'GET',
   path: '/health-check',
-  handler: function(request, h) {
-    return h.response('OK').code(200);
-  }
-});
-
-server.route({
-  method: 'GET',
-  path: '/hello',
-  handler: function(request, h) {
-    return 'hello world ...query is: ' + JSON.stringify(request.query);
-  }
+  handler: (request, h) => { return h.response('OK').code(200) }
 });
 
 server.route({
   method: 'POST',
   path: '/github_glue',
   handler: function(request, h) {
-    let action = request.payload.action;
-    let pr = request.payload.pull_request || {};
-    let entID = pr.body && TP.parseEntityID(pr.body);
-    if (action === 'opened' && entID) {
-      TP.link(entID, pr.html_url)
-        .then(() => console.log(`spotted ${entID}, glued to ${pr.html_url}`));
-    }
-
+    plugins.each((plugin) => plugin.payloadReceived(request.payload));
     return h.response('OK').code(201);
   }
 });
