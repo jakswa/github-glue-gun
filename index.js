@@ -36,4 +36,5 @@ async function start() {
 }
 
 start();
-console.log('Server running at:', server.info.uri);
+console.log('Welcome! Server running at:', server.info.uri);
+console.log(`TP HOST: ${process.env.TP_HOST}`);
