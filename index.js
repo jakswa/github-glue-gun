@@ -21,7 +21,7 @@ server.route({
   method: 'POST',
   path: '/github_glue',
   handler: function(request, h) {
-    plugins.each((plugin) => plugin.payloadReceived(request.payload));
+    plugins.forEach((plugin) => plugin.payloadReceived(request.payload));
     return h.response('OK').code(201);
   }
 });
