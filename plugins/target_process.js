@@ -9,9 +9,9 @@ const BASE_URL = `https://${TP_HOST}/api/v1`;
 class TargetProcess {
   static payloadReceived(payload) {
     let action = payload.action;
-    let pr = payload.pull_request || {};
+    let pr = payload.pull_request || payload.comment || {};
     let entID = pr.body && this.parseEntityID(pr.body);
-    if (action === 'opened' && entID) {
+    if (['opened', 'created'].includes(action) && entID) {
       this.link(entID, pr.html_url)
         .then(() => console.log(`spotted ${entID}, glued to ${pr.html_url}`));
     }
