@@ -1,10 +1,9 @@
 const fetch = require('node-fetch');
 
-// tp:Bugs/1234 or tp:UserStory/1234
-const PATTERN = /(fixes|links) tp:([0-9]+)/;
 const TP_HOST = process.env.TP_HOST;
 const TP_TOKEN = process.env.TP_TOKEN; 
 const BASE_URL = `https://${TP_HOST}/api/v1`;
+const URL_PATTERN = new RegExp(`https://${TP_HOST}/entity/(?<entID>\\d+)`);
 
 class TargetProcess {
   static payloadReceived(payload) {
@@ -18,8 +17,8 @@ class TargetProcess {
   }
 
   static parseEntityID(text) {
-    let match = text.match(PATTERN);
-    return match && match[2];
+    let match = text.match(URL_PATTERN);
+    return match && match.groups.entID;
   }
 
   static link(entityID, linkURL) {
